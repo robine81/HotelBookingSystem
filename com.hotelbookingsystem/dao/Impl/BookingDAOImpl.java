@@ -4,11 +4,7 @@ import dao.BookingDAO;
 import db.DBConnection;
 import models.Booking;
 
-import javax.xml.transform.Result;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,12 +16,18 @@ public class BookingDAOImpl implements BookingDAO {
         int rowsAdded = 0;
         String sql = "INSERT INTO bookings (customer_id, room_id, start_date, end_date) VALUES (?, ?, ?, ?)";
         try( Connection conn = DBConnection.getConnection();
-            PreparedStatement stmt = conn.prepareStatement(sql)){
+            PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)){
             stmt.setInt(1, booking.getCustomerId());
             stmt.setInt(2, booking.getRoomId());
             stmt.setObject(3, booking.getStartDate());
             stmt.setObject(4, booking.getEndDate());
             rowsAdded = stmt.executeUpdate();
+
+            try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    booking.setId(generatedKeys.getInt(1));
+                }
+            }
         } catch ( SQLException e ) {
             e.printStackTrace();
         }
