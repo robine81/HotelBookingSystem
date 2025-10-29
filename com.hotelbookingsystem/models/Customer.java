@@ -13,12 +13,22 @@ public class Customer {
         this.city = city;
     }
 
+    public Customer(String name, String email, String city) {
+        this.id = -1;
+        this.name = name;
+        this.email = email;
+        this.city = city;
+    }
+
     public int getId() {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void initialiseId(int id) {
+        if(this.id == -1)
+        {
+            this.id = id;
+        }
     }
 
     public String getName() {

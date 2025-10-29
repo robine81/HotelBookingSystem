@@ -12,10 +12,7 @@ public class CustomerController {
         }
     }
 
-    public int addCustomer(Customer customer){
-        int returnedRows = service.addCustomer(customer);
-        return returnedRows;
-    }
+    public int addCustomer(Customer customer){ return service.addCustomer(customer); }
 
     public Customer findCustomerByEmail(String email){ return service.findCustomerByEmail(email); }
 }
