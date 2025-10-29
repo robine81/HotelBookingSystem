@@ -1,7 +1,7 @@
 package models;
 
 public class Room {
-    private final int id;
+    private int id;
     private String type;
     private double price;
 
@@ -27,6 +27,12 @@ public class Room {
 
     public double getPrice() {
         return price;
+    }
+
+    public void initializeId(int id) {
+        if(this.id == -1) {
+            this.id = id;
+        }
     }
 
     public void setType(String type) {
