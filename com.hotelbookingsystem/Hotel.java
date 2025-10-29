@@ -8,6 +8,7 @@ import Restaurant.BreakfastRestaurantTable;
 import Rooms.DoubleRoom;
 import Rooms.SingleRoom;
 import Rooms.Suite;
+import dao.CustomerDAO;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -27,34 +28,38 @@ public class Hotel {
     }
 
     private void populateGuests () {
-        guestManager.addGuest(new Guest("Arne", "Gullberg", "123", "arne.gullberg@arneslivs.se", "070222700"));
-        guestManager.addGuest(new Guest("Gun-Britt", "Andersson", "124", "gunbritt@apple.com", "0703375130"));
+//        guestManager.addGuest(new Guest("Arne", "Gullberg", "123", "arne.gullberg@arneslivs.se", "070222700"));
+//        guestManager.addGuest(new Guest("Gun-Britt", "Andersson", "124", "gunbritt@apple.com", "0703375130"));
     }
 
     private void populateHotelWithBookables () {
-        this.bookingManager.addBookableEntity(new BreakfastRestaurantTable(2));
-        this.bookingManager.addBookableEntity(new BreakfastRestaurantTable(2));
-        this.bookingManager.addBookableEntity(new BreakfastRestaurantTable(10));
-
-        this.bookingManager.addBookableEntity(new SingleRoom(200));
-        this.bookingManager.addBookableEntity(new SingleRoom(200));
-        this.bookingManager.addBookableEntity(new SingleRoom(300));
-        this.bookingManager.addBookableEntity(new DoubleRoom(400));
-        this.bookingManager.addBookableEntity(new DoubleRoom(400));
-        this.bookingManager.addBookableEntity(new Suite(20000, 10));
-
-        this.bookingManager.addBookableEntity(new Suite(30000, 10));
-        SpaTreatment temp = new SpaTreatment(200);
-        this.bookingManager.addBookableEntity(temp);
+//        this.bookingManager.addBookableEntity(new BreakfastRestaurantTable(2));
+//        this.bookingManager.addBookableEntity(new BreakfastRestaurantTable(2));
+//        this.bookingManager.addBookableEntity(new BreakfastRestaurantTable(10));
+//
+//        this.bookingManager.addBookableEntity(new SingleRoom(200));
+//        this.bookingManager.addBookableEntity(new SingleRoom(200));
+//        this.bookingManager.addBookableEntity(new SingleRoom(300));
+//        this.bookingManager.addBookableEntity(new DoubleRoom(400));
+//        this.bookingManager.addBookableEntity(new DoubleRoom(400));
+//        this.bookingManager.addBookableEntity(new Suite(20000, 10));
+//
+//        this.bookingManager.addBookableEntity(new Suite(30000, 10));
+//        SpaTreatment temp = new SpaTreatment(200);
+//        this.bookingManager.addBookableEntity(temp);
     }
 
     public void runMenu() {
         IGuest cur = this.guestManager.getGuests().get(0);
         InputManagementUtility.runMenuUntilQuit(new HashMap<String, Runnable>(){{
             put("Book", () -> makeABooking(cur));
+            put("Guests", () -> guestMenu());
         }});
     }
 
+    public void guestMenu() {
+        CustomerDAO.getAllCustomers
+    }
     public void makeABooking (IBooker booker) {
         LocalDate fromDate;
         LocalDate toDate;
