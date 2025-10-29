@@ -1,4 +1,4 @@
-import BookableServices.SpaTreatment;
+import com.BookableServices.SpaTreatment;
 import BookingSystem.*;
 import GuestMgmt.Guest;
 import GuestMgmt.GuestManager;
