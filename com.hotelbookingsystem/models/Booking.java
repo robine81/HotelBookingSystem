@@ -25,8 +25,10 @@ public class Booking {
         return id;
     }
 
-    public void setId (int id) {
-        this.id = id;
+    public void initializeId(int id) {
+        if(this.id == -1) {
+            this.id = id;
+        }
     }
 
     public int getCustomerId () {

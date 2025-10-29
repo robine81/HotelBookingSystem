@@ -25,7 +25,7 @@ public class BookingDAOImpl implements BookingDAO {
 
             try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
-                    booking.setId(generatedKeys.getInt(1));
+                    booking.initializeId(generatedKeys.getInt(1));
                 }
             }
         } catch ( SQLException e ) {
