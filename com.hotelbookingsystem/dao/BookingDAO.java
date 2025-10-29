@@ -1,14 +1,22 @@
 package dao;
 
 import models.Booking;
+import models.Customer;
+import models.Room;
 
 import java.util.List;
 
 public interface BookingDAO {
 
-    List<Booking> getALlBookings();
-    List<Booking> getAllBookingsByRoomId(int roomId);
-    List<Booking> getALlBookingByCustomerId(int customerId);
+    int addBooking(Booking booking);
+
+    List<Booking> getAllBookings();
+
+    List<Booking> getBookingsByRoomId(int roomId);
+
+    List<Booking> getBookingsByCustomerId(int customerId);
+
     int updateBooking(Booking booking);
-    int deleteBooking(Booking booking);
+
+    int cancelBooking(Booking booking);
 }

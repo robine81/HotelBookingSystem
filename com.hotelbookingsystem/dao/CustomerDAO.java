@@ -6,9 +6,14 @@ import java.util.List;
 import java.util.Optional;
 
 public interface CustomerDAO {
-    List<Customer> getAllCustomers();
-    Optional<Customer> getCustomerByEmail(String email);
+
     int addCustomer(Customer customer);
-    int deleteCustomer(Customer customer);
+
+    List<Customer> getAllCustomers();
+
+    Optional<Customer> findCustomerByEmail(String email);
+
     int updateCustomer(Customer customer);
+
+    int deleteCustomer(Customer customer);
 }
