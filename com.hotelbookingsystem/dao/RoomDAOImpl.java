@@ -18,7 +18,7 @@ public class RoomDAOImpl implements RoomDAO{
                 VALUES(?, ?)
                 """;
         try(Connection conn = DBConnection.getConnection();
-            PreparedStatement statement = conn.prepareStatement(sql)) {
+            PreparedStatement statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, room.getType());
             statement.setDouble(2, room.getPrice());
             rowsAdded = statement.executeUpdate();
