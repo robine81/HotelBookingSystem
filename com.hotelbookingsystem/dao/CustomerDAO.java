@@ -11,7 +11,7 @@ public interface CustomerDAO {
 
     List<Customer> getAllCustomers();
 
-    Optional<Customer> findCustomerByEmail(String email);
+    Customer findCustomerByEmail(String email);
 
     int updateCustomer(Customer customer);
 
