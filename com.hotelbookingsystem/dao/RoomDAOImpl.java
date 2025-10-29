@@ -22,6 +22,11 @@ public class RoomDAOImpl implements RoomDAO{
             statement.setString(1, room.getType());
             statement.setDouble(2, room.getPrice());
             rowsAdded = statement.executeUpdate();
+            try(ResultSet generatedKeys = statement.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    room.initializeId(generatedKeys.getInt("id"));
+                }
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -30,6 +35,25 @@ public class RoomDAOImpl implements RoomDAO{
 
     @Override
     public Optional<Room> getRoomById(int id) {
+        String sql = """
+                SELECT * FROM rooms WHERE id = ?
+                """;
+        try(Connection conn = DBConnection.getConnection();
+            PreparedStatement statement = conn.prepareStatement(sql)){
+            statement.setInt(1, id);
+            try(ResultSet rs = statement.executeQuery()){
+                if (rs.next()) {
+                    return Optional.of(new Room(
+                            rs.getInt("id"),
+                            rs.getString("type"),
+                            rs.getDouble("price")));
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return Optional.empty();
     }
 
@@ -80,11 +104,38 @@ public class RoomDAOImpl implements RoomDAO{
 
     @Override
     public int updateRoom(Room room) {
-        return 0;
+        int rowsUpdated = 0;
+        String sql = """
+                UPDATE rooms
+                SET type = ?
+                AND price = ?
+                WHERE id = ?
+                """;
+        try(Connection conn = DBConnection.getConnection();
+            PreparedStatement statement = conn.prepareStatement(sql)) {
+            statement.setString(1, room.getType());
+            statement.setDouble(2, room.getPrice());
+            statement.setInt(3, room.getId());
+            rowsUpdated = statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return rowsUpdated;
     }
 
     @Override
     public int deleteRoom(Room room) {
-        return 0;
+        int rowsDeleted = 0;
+        String sql = """
+                DELETE FROM rooms WHERE id = ?
+                """;
+        try(Connection conn = DBConnection.getConnection();
+            PreparedStatement statement = conn.prepareStatement(sql)) {
+            statement.setInt(1, room.getId());
+            rowsDeleted = statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return rowsDeleted;
     }
 }
