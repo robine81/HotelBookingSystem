@@ -4,19 +4,20 @@ import models.Booking;
 import models.Customer;
 import models.Room;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public interface BookingDAO {
 
-    int addBooking(Booking booking);
+    int addBooking(Booking booking) throws SQLException;
 
-    List<Booking> getAllBookings();
+    List<Booking> getAllBookings() throws SQLException;
 
-    List<Booking> getBookingsByRoomId(int roomId);
+    List<Booking> getBookingsByRoomId(int roomId) throws SQLException;
 
-    List<Booking> getBookingsByCustomerId(int customerId);
+    List<Booking> getBookingsByCustomerId(int customerId) throws SQLException;
 
-    int updateBooking(Booking booking);
+    int updateBooking(Booking booking) throws SQLException;
 
-    int cancelBooking(Booking booking);
+    int cancelBooking(Booking booking) throws SQLException;
 }
