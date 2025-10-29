@@ -5,6 +5,34 @@ public class InputManagementUtility {
     public static String runMenuUntilQuit(Map<String, Runnable> optionMap) {
         return runMenuUntilQuit(new Scanner(System.in), optionMap);
     }
+    private static Scanner scanner = new Scanner(System.in);
+    public static Scanner getScannerInstance() {
+        return scanner;
+    }
+    public static int nextInt() {
+        String line = getScannerInstance().nextLine();
+        return Integer.parseInt(line);
+    }
+    public static int nextInt(String message) {
+        System.out.printf("%s: ", message);
+        return nextInt();
+    }
+    public static double nextDouble() {
+        String line = getScannerInstance().nextLine();
+        return Double.parseDouble(line);
+    }
+    public static double nextDouble(String message) {
+        System.out.printf("%s: ", message);
+        return nextDouble();
+    }
+    public static String nextLine() {
+        String line = getScannerInstance().nextLine();
+        return line;
+    }
+    public static String nextLine(String message) {
+        System.out.printf("%s: ", message);
+        return nextLine();
+    }
     public static String runMenuUntilQuit(Scanner scanner, Map<String, Runnable> optionMap) {
         boolean[] flag = new boolean[] { true };
         String chosen = null;
@@ -19,10 +47,9 @@ public class InputManagementUtility {
         return runMenu(new  Scanner(System.in), optionMap);
     }
     public static String runMenu(Scanner scanner, Map<String, Runnable> optionMap) {
-        List<String> keys = new ArrayList<>(optionMap.keySet());
         String chosenMenuItem = null;
         while (true) {
-            // Print menu options with indexes
+            List<String> keys = new ArrayList<>(optionMap.keySet());
             for (int i = 0; i < keys.size(); i++) {
                 System.out.println(i + ": " + keys.get(i));
             }

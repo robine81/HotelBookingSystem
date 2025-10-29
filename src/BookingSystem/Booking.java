@@ -1,7 +1,7 @@
 package BookingSystem;
 
 import java.time.LocalDate;
-public class Booking {
+public class Booking implements IBooking {
     private LocalDate start;
     private LocalDate end;
     private IBooker booker;

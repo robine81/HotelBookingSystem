@@ -2,7 +2,7 @@ package Rooms;
 
 import BookingSystem.IBookable;
 
-public class SingleRoom extends Room implements IBookable {
+public class SingleRoom extends Room {
     public SingleRoom(double price) {
         super(price, 1);
     }
@@ -13,7 +13,7 @@ public class SingleRoom extends Room implements IBookable {
 
     @Override
     public String getPrintableName() {
-        return "Single Rooms.Room";
+        return "Single Room";
     }
 
 

@@ -6,8 +6,6 @@ public interface IBookable {
         DoubleRoom,
         Suite,
         BreakfastRestaurantTable,
-        EveningRestaurantTable,
-        BallRoom,
         SpaTreatment
     }
     public Type getType();

@@ -24,4 +24,8 @@ public class GuestManager implements IGuestManager {
             return false;
         }
     }
+
+    public List<IGuest> getGuests() {
+        return Collections.unmodifiableList(guests);
+    }
 }

@@ -5,7 +5,6 @@ import BookingSystem.IBookable;
 public abstract class Room implements IBookable {
     private double price;
     private int capacity;
-    private boolean isOccupied;
 
     public enum RoomType {
         SingleRoom,

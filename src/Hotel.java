@@ -1,44 +1,127 @@
+import BookableServices.SpaTreatment;
 import BookingSystem.*;
 import GuestMgmt.Guest;
 import GuestMgmt.GuestManager;
 import GuestMgmt.IGuest;
 import GuestMgmt.IGuestManager;
+import Restaurant.BreakfastRestaurantTable;
+import Rooms.DoubleRoom;
 import Rooms.SingleRoom;
+import Rooms.Suite;
 
+import java.time.LocalDate;
 import java.util.*;
+import java.util.concurrent.Callable;
+import java.util.function.Function;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Hotel {
-    Scheduler scheduler = new Scheduler();
-    List<IBookable> bookableEntities = new ArrayList<>();
-    IGuestManager guestManager;
-    IBookingManager bookingManager;
+    IGuestManager guestManager = new GuestManager();
+    IBookingManager bookingManager = new Scheduler();
+
+    {
+        this.populateGuests();
+        this.populateHotelWithBookables();
+    }
+
+    private void populateGuests () {
+        guestManager.addGuest(new Guest("Arne", "Gullberg", "123", "arne.gullberg@arneslivs.se", "070222700"));
+        guestManager.addGuest(new Guest("Gun-Britt", "Andersson", "124", "gunbritt@apple.com", "0703375130"));
+    }
 
     private void populateHotelWithBookables () {
-        guestManager.addGuest(new Guest("Tomas", "K", "123", "email", "070222700"));
-        /*
-        guests.add();
+        this.bookingManager.addBookableEntity(new BreakfastRestaurantTable(2));
+        this.bookingManager.addBookableEntity(new BreakfastRestaurantTable(2));
+        this.bookingManager.addBookableEntity(new BreakfastRestaurantTable(10));
 
-        bookableEntities.add(new SingleRoom(300));
-        bookableEntities.add(new SingleRoom(500));
+        this.bookingManager.addBookableEntity(new SingleRoom(200));
+        this.bookingManager.addBookableEntity(new SingleRoom(200));
+        this.bookingManager.addBookableEntity(new SingleRoom(300));
+        this.bookingManager.addBookableEntity(new DoubleRoom(400));
+        this.bookingManager.addBookableEntity(new DoubleRoom(400));
+        this.bookingManager.addBookableEntity(new Suite(20000, 10));
 
-        // bookableEntities.add(new Rooms.SingleRoom(200.0, ))
-        IBooker booker = guests.get(0);
-        Optional<IGuest> foundGuest = guests.stream()
-                .filter(guest -> guest.equals(booker))
-                .findFirst();
-        System.out.println("Found GuestMgmt.Guest: " + foundGuest.orElse(null));
-         */
+        this.bookingManager.addBookableEntity(new Suite(30000, 10));
+        SpaTreatment temp = new SpaTreatment(200);
+        this.bookingManager.addBookableEntity(temp);
     }
 
-    public Hotel() {
-        populateHotelWithBookables();
-    }
-
-    public boolean runCLI() {
-        InputManagementUtility.runMenuUntilQuit(new LinkedHashMap<String, Runnable>(){{
-            put("test", () -> System.out.println("test"));
-            put("test2", () -> System.out.println("test2"));
+    public void runMenu() {
+        IGuest cur = this.guestManager.getGuests().get(0);
+        InputManagementUtility.runMenuUntilQuit(new HashMap<String, Runnable>(){{
+            put("Book", () -> makeABooking(cur));
         }});
-        return true;
+    }
+
+    public void makeABooking (IBooker booker) {
+        LocalDate fromDate;
+        LocalDate toDate;
+        while (true) {
+            boolean acceptedInput = false;
+            String from = InputManagementUtility.nextLine("Choose a start date (leave empty for today)");
+            if (from.equals("")) {
+                fromDate = LocalDate.now();
+                acceptedInput = true;
+            }
+            else {
+                fromDate = LocalDate.parse(from);
+                if (fromDate.isAfter(LocalDate.now())) {
+                    acceptedInput = true;
+                }
+                else {
+                    System.out.println("Please choose a date after "+ LocalDate.now());
+                }
+            }
+            if(acceptedInput) {
+                break;
+            }
+        }
+        String to = InputManagementUtility.nextLine("Choose an end date (leave empty for tomorrow)");
+        if (to.equals("")) {
+            LocalDate today = LocalDate.now();
+            toDate = today.plusDays(1);
+        }
+        else {
+            toDate = LocalDate.parse(to);
+        }
+
+        System.out.println("Available choices for booking: ");
+
+        List<IBookable> bookables = this.bookingManager.getBookableItemsForPeriod(fromDate, toDate);
+
+        Stream<IBookable> stream = bookables.stream();
+
+        Function<IBookable, String> keyFormatter = (i) -> String.format(
+                "%s (%f EUR) (Capacity: %d)",
+                i.getPrintableName(),
+                i.getPrice(),
+                i.getCapacity()
+        );
+
+        Collector<IBookable, ?, Callable<List<IBookable>>> collector =
+                Collectors.collectingAndThen(
+                        Collectors.toList(),
+                        (List<IBookable> list) -> (Callable<List<IBookable>>) () -> list
+                );
+
+        Map<String, Callable<List<IBookable>>> groupMap = stream.collect(
+                Collectors.groupingBy(
+                        keyFormatter,
+                        HashMap::new,
+                        collector
+                )
+        );
+
+        List<IBookable> choices = InputManagementUtility.runMenuType(groupMap);
+
+        IBookable firstAvailable = choices.get(0);
+        try {
+            this.bookingManager.addBooking(firstAvailable, booker, fromDate, toDate);
+            System.out.printf("Congratulations! You have made a successful booking of %s%n", firstAvailable.getPrintableName());
+        } catch (Exception e) {
+            System.out.println("Something went wrong");
+        }
     }
 }

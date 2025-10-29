@@ -46,11 +46,4 @@ public class Guest implements IGuest {
         this.phoneNumber = phoneNumber;
     }
 
-    public IBooker.Type getType() {
-        return IBooker.Type.Guest;
-    }
-
-    public IBooker getBooker() {
-        return this;
-    }
 }
