@@ -40,8 +40,7 @@ public class CustomerController {
         String email = InputManagementUtility.nextLine("Enter email:");
         String city = InputManagementUtility.nextLine("Enter city:");
         try {
-            throw new SQLException("not implemented");
-            // System.out.println(service.addCustomer(name,email,city));
+            System.out.println(service.addCustomer(name,email,city));
         } catch (SQLException e) {
             e.printStackTrace();
         }
