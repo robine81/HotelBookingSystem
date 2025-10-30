@@ -15,8 +15,7 @@ public class BookingDAOImpl implements BookingDAO {
     public int addBooking (Booking booking) throws SQLException {
         int rowsAdded = 0;
         String sql = "INSERT INTO bookings (customer_id, room_id, start_date, end_date) VALUES (?, ?, ?, ?)";
-        try( Connection conn = DBConnection.getConnection();
-            PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)){
+        try( PreparedStatement stmt = DBConnection.getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)){
             stmt.setInt(1, booking.getCustomerId());
             stmt.setInt(2, booking.getRoomId());
             stmt.setObject(3, booking.getStartDate());
@@ -38,8 +37,7 @@ public class BookingDAOImpl implements BookingDAO {
     public List<Booking> getAllBookings () throws SQLException {
         List<Booking> bookings = new ArrayList<>();
         String sql = "SELECT * FROM bookings";
-        try( Connection conn = DBConnection.getConnection();
-            PreparedStatement stmt = conn.prepareStatement(sql)){
+        try( PreparedStatement stmt = DBConnection.getConnection().prepareStatement(sql)){
             ResultSet rs = stmt.executeQuery();
 
             while(rs.next()){
@@ -58,8 +56,7 @@ public class BookingDAOImpl implements BookingDAO {
     public List<Booking> getBookingsByRoomId (int roomId) throws SQLException {
         List<Booking> bookingsByRoomId = new ArrayList<>();
         String sql = "SELECT * FROM bookings WHERE room_id = ?";
-        try( Connection conn = DBConnection.getConnection();
-            PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try( PreparedStatement stmt = DBConnection.getConnection().prepareStatement(sql)) {
             stmt.setInt(1, roomId);
             ResultSet rs = stmt.executeQuery();
 
@@ -79,8 +76,7 @@ public class BookingDAOImpl implements BookingDAO {
     public List<Booking> getBookingsByCustomerId (int customerId) throws SQLException {
         List<Booking> bookingsByCustomerID = new ArrayList<>();
         String sql = "SELECT * FROM bookings where customer_id = ?";
-        try( Connection conn = DBConnection.getConnection();
-            PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try( PreparedStatement stmt = DBConnection.getConnection().prepareStatement(sql)) {
             stmt.setInt(1, customerId);
             ResultSet rs = stmt.executeQuery();
 
@@ -100,8 +96,7 @@ public class BookingDAOImpl implements BookingDAO {
     public int updateBooking (Booking booking) throws SQLException {
         int rowsUpdated = 0;
         String sql = "UPDATE bookings SET customer_id = ?, room_id = ?, start_date = ?, end_date = ? WHERE id = ?";
-        try( Connection conn = DBConnection.getConnection();
-            PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try( PreparedStatement stmt = DBConnection.getConnection().prepareStatement(sql)) {
             stmt.setInt(1, booking.getCustomerId());
             stmt.setInt(2, booking.getRoomId());
             stmt.setObject(3, booking.getStartDate());
@@ -116,8 +111,7 @@ public class BookingDAOImpl implements BookingDAO {
     public int cancelBooking (Booking booking) throws SQLException {
         int rowsDeleted = 0;
         String sql = "DELETE FROM bookings WHERE id = ?";
-        try( Connection conn = DBConnection.getConnection();
-            PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try( PreparedStatement stmt = DBConnection.getConnection().prepareStatement(sql)) {
             stmt.setInt(1, booking.getId());
             rowsDeleted = stmt.executeUpdate();
         }
