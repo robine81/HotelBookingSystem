@@ -40,7 +40,7 @@ public class BookingService {
     }
 
     public List<Booking> getBookingsByCustomerEmail(String email) throws SQLException {
-        Customer customer = customerService.findCustomerByEmail(email);
+        Customer customer = customerService.getCustomerByEmail(email);
         return bookingDAO.getAllBookings().stream().filter(b -> b.getCustomerId() == customer.getId()).toList();
     }
 
