@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class CustomerDAOImpl {
+public class CustomerDAOImpl implements CustomerDAO {
 
     public int addCustomer(Customer customer){
         int rowsReturned = 0;
@@ -78,7 +78,7 @@ public class CustomerDAOImpl {
         return returnedRows;
     }
 
-    /*public int deleteCustomer(Customer customer){
-
-    }*/
+    public int deleteCustomer(Customer customer){
+        return 0;
+    }
 }
