@@ -3,11 +3,11 @@ package models;
 import java.time.LocalDate;
 
 public class Booking {
-    int id;
-    int customerId;
-    int roomId;
-    LocalDate startDate;
-    LocalDate endDate;
+    private int id;
+    private final int customerId;
+    private final int roomId;
+    private LocalDate startDate;
+    private LocalDate endDate;
 
     public Booking (int customerId, int roomId, LocalDate startDate, LocalDate endDate) {
         this.customerId = customerId;
@@ -53,5 +53,15 @@ public class Booking {
 
     public void setEndDate (LocalDate endDate) {
         this.endDate = endDate;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(String.format("ID: %s%n", id));
+        sb.append(String.format("Room ID: %s%n", roomId));
+        sb.append(String.format("Start date: %s%n", startDate));
+        sb.append(String.format("End date: %s%n", endDate));
+        return sb.toString();
     }
 }
