@@ -16,4 +16,6 @@ public class CustomerService {
     public Customer findCustomerByEmail(String email) throws SQLException{ return dao.findCustomerByEmail(email); }
 
     public int updateCustomer(Customer customer) throws SQLException { return dao.updateCustomer(customer); }
+
+    public int deleteCustomer(int id) throws SQLException { return dao.deleteCustomer(id); };
 }
