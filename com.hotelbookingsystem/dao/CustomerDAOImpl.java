@@ -8,9 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class CustomerDAOImpl {
+public class CustomerDAOImpl implements CustomerDAO {
 
-    public int addCustomer(Customer customer){
+    public int addCustomer(Customer customer) throws SQLException{
         int rowsReturned = 0;
         String sqlQuery = "INSERT INTO customers (name, email, city) " +
                 "VALUES (?, ?, ?)";
@@ -23,13 +23,10 @@ public class CustomerDAOImpl {
             rowsReturned = stmt.executeUpdate();
             return rowsReturned;
 
-        } catch (SQLException e){
-            e.printStackTrace();
         }
-        return rowsReturned;
     }
 
-    public List<Customer> getAllCustomers(){
+    public List<Customer> getAllCustomers() throws SQLException{
         List<Customer> customers = new ArrayList<>();
         String sqlQuery = "SELECT * FROM customers";
 
@@ -49,7 +46,7 @@ public class CustomerDAOImpl {
         return customers;
     }
 
-    public Customer findCustomerByEmail(String email){
+    public Customer findCustomerByEmail(String email) throws SQLException{
         String sqlQuery = "SELECT * FROM customers WHERE email = ?";
 
         try( Connection conn = DBConnection.getConnection();
@@ -72,13 +69,13 @@ public class CustomerDAOImpl {
         return null;
     }
 
-    public int updateCustomer(Customer customer){
+    public int updateCustomer(Customer customer) throws SQLException{
         int returnedRows = 0;
 
         return returnedRows;
     }
 
-    /*public int deleteCustomer(Customer customer){
-
-    }*/
+    public int deleteCustomer(Customer customer) throws SQLException{
+        return 0;
+    }
 }
