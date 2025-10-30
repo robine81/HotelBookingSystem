@@ -53,6 +53,26 @@ public class BookingDAOImpl implements BookingDAO {
     }
 
     @Override
+    public List<Booking> getBookingsBetweenDates(LocalDate startDate, LocalDate endDate) throws SQLException {
+        List<Booking> dateFilteredBookings = new ArrayList<>();
+        String sql = "SELECT * FROM bookings WHERE start_date >= ? AND end_date <= ?";
+        try( PreparedStatement stmt = DBConnection.getConnection().prepareStatement(sql)) {
+            stmt.setObject(1, startDate);
+            stmt.setObject(2, endDate);
+            ResultSet rs = stmt.executeQuery();
+            while(rs.next()) {
+                dateFilteredBookings.add(new Booking(
+                        rs.getInt("id"),
+                        rs.getInt("customer_id"),
+                        rs.getInt("room_id"),
+                        rs.getObject("start_date", LocalDate.class),
+                        rs.getObject("end_date", LocalDate.class)));
+            }
+        }
+        return dateFilteredBookings;
+    }
+
+    @Override
     public List<Booking> getBookingsByRoomId (int roomId) throws SQLException {
         List<Booking> bookingsByRoomId = new ArrayList<>();
         String sql = "SELECT * FROM bookings WHERE room_id = ?";
