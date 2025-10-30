@@ -99,8 +99,8 @@ public class RoomDAOImpl implements RoomDAO{
         int rowsUpdated;
         String sql = """
                 UPDATE rooms
-                SET type = ?
-                AND price = ?
+                SET type = ?,
+                 price = ?
                 WHERE id = ?
                 """;
         Connection conn = DBConnection.getConnection();
