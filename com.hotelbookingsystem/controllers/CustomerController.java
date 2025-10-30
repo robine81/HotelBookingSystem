@@ -24,7 +24,7 @@ public class CustomerController {
         String enteredEmail = InputManagementUtility.nextLine("Enter email:");
 
         try {
-            Customer foundCustomer = service.findCustomerByEmail(enteredEmail);
+            Customer foundCustomer = service.getCustomerByEmail(enteredEmail);
             System.out.println(foundCustomer);
         } catch (SQLException e) {
             e.printStackTrace();
