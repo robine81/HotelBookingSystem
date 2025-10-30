@@ -22,5 +22,5 @@ public interface BookingDAO {
 
     int updateBooking(Booking booking) throws SQLException;
 
-    int cancelBooking(Booking booking) throws SQLException;
+    int cancelBooking(int id) throws SQLException;
 }
