@@ -9,7 +9,10 @@ import java.util.List;
 public class CustomerService {
     CustomerDAOImpl dao = new CustomerDAOImpl();
 
-    public int addCustomer(Customer customer) throws SQLException { return dao.addCustomer(customer);}
+    public int addCustomer(String name, String email, String city) throws SQLException {
+        Customer customer = new Customer(name, email, city);
+        return dao.addCustomer(customer);
+    }
 
     public List<Customer> getAllCustomers() throws SQLException { return dao.getAllCustomers(); }
 
