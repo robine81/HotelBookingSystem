@@ -1,6 +1,5 @@
 package controllers;
 
-import models.Booking;
 import models.Room;
 import services.RoomService;
 
@@ -47,7 +46,7 @@ public class RoomController {
         while (true) {
             boolean acceptedInput = false;
             String from = InputManagementUtility.nextLine("Choose a start date (leave empty for today)");
-            if (from.equals("")) {
+            if (from.isEmpty()) {
                 startDate = LocalDate.now();
                 acceptedInput = true;
             }
@@ -65,7 +64,7 @@ public class RoomController {
             }
         }
         String to = InputManagementUtility.nextLine("Choose an end date (leave empty for tomorrow)");
-        if (to.equals("")) {
+        if (to.isEmpty()) {
             LocalDate today = LocalDate.now();
             endDate = today.plusDays(1);
         }
@@ -85,7 +84,15 @@ public class RoomController {
     }
 
     private void updateRoom() {
-        System.out.println("not implemented");
+        int roomId = InputManagementUtility.nextInt("Enter ID of room to update");
+        try {
+            prettyPrint(service.getRoomByID(roomId));
+            String type = InputManagementUtility.nextLine("Enter new type");
+            double price = InputManagementUtility.nextDouble("Enter new price");
+            service.updateRoom(roomId,type,price);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void prettyPrint(Room room) {
