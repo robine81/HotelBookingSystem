@@ -15,11 +15,15 @@ public class CustomerService {
         return dao.addCustomer(customer);
     }
 
-    public List<Customer> getAllCustomers() throws SQLException { return dao.getAllCustomers(); }
+    public List<Customer> getAllCustomers() throws SQLException {
+        return dao.getAllCustomers();
+    }
 
-    public Customer getCustomerByEmail(String email) throws SQLException{ return dao.getCustomerByEmail(email); }
+    public Customer getCustomerByEmail(String email) throws SQLException {
+        return dao.getCustomerByEmail(email);
+    }
 
-    public Customer getRoomById(int id) throws SQLException {
+    public Customer getCustomerById(int id) throws SQLException {
         Optional<Customer> optCustomer = dao.getCustomerById(id);
         if(optCustomer.isPresent()){
             return optCustomer.get();
@@ -28,7 +32,11 @@ public class CustomerService {
         }
     }
 
-    public int updateCustomer(Customer customer) throws SQLException { return dao.updateCustomer(customer); }
+    public int updateCustomer(Customer customer) throws SQLException {
+        return dao.updateCustomer(customer);
+    }
 
-    public int deleteCustomer(int id) throws SQLException { return dao.deleteCustomer(id); };
+    public int deleteCustomer(int id) throws SQLException {
+        return dao.deleteCustomer(id);
+    }
 }
