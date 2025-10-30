@@ -2,6 +2,7 @@ package services;
 
 import dao.Impl.BookingDAOImpl;
 import models.Booking;
+import models.Customer;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -10,9 +11,10 @@ import java.util.List;
 public class BookingService {
 
     BookingDAOImpl bookingDAO = new BookingDAOImpl();
+    CustomerService customerService = new CustomerService();
 
-    public int addBooking(Booking booking) throws SQLException {
-        return bookingDAO.addBooking(booking);
+    public void addBooking(int id, int roomId, LocalDate startDate, LocalDate endDate) throws SQLException {
+        bookingDAO.addBooking(new Booking(id, roomId, startDate, endDate));
     }
 
     public List<Booking> getAllBookings() throws SQLException { return bookingDAO.getAllBookings(); }
@@ -35,6 +37,11 @@ public class BookingService {
 
     public List<Booking> getBookingsByCustomerId(int customerId) throws SQLException {
         return bookingDAO.getBookingsByCustomerId(customerId);
+    }
+
+    public List<Booking> getBookingsByCustomerEmail(String email) throws SQLException {
+        Customer customer = customerService.findCustomerByEmail(email);
+        return bookingDAO.getAllBookings().stream().filter(b -> b.getCustomerId() == customer.getId()).toList();
     }
 
     public int updateBooking(Booking booking) throws SQLException {

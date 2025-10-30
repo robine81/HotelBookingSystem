@@ -4,7 +4,9 @@ import models.Booking;
 import services.BookingService;
 
 import java.sql.SQLException;
+import java.sql.SQLOutput;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -15,8 +17,9 @@ public class BookingController {
         InputManagementUtility.runMenuUntilQuit(new HashMap<>(){{
             put("Book a room", () -> makeABooking());
             put("Show all bookings", () -> showAllBookings());
-            put("Find Customer Bookings by Email", () -> System.out.println("show bookings for customer"));
-            put("Cancel booking", () -> System.out.println("cancel booking"));
+            put("Find Customer Bookings by ID", () -> showBookingsByCustomerId());
+            put("Find Customer Bookings by email", () -> showBookingsByCustomerEmail());
+            put("Cancel booking", () -> cancelBookingByBookingID());
         }});
     }
 
@@ -34,8 +37,8 @@ public class BookingController {
         LocalDate fromDate;
         LocalDate toDate;
 
-        int roomId = InputManagementUtility.nextInt("Enter the id of the room you wish to book");
-        int customerId = InputManagementUtility.nextInt("Enter the id of the person making the booking");
+        int roomId = InputManagementUtility.nextInt("Enter the ID of the room you wish to book");
+        int customerId = InputManagementUtility.nextInt("Enter the ID of the person making the booking");
 
         while (true) {
             boolean acceptedInput = false;
@@ -67,9 +70,51 @@ public class BookingController {
         }
 
         try{
-            service.addBooking(new Booking(customerId, roomId, fromDate, toDate));
+            service.addBooking(customerId, roomId, fromDate, toDate);
+            System.out.printf("Your booking has been placed! Your Room ID is: %d and your stay is between %TF and %TF%n",
+                    roomId,
+                    fromDate,
+                    toDate);
         } catch (SQLException e){
+            System.out.println("Something has gone wrong, please try again later");
             e.printStackTrace();
+        }
+    }
+
+    private void showBookingsByCustomerId() {
+        List<Booking> bookingsById = new ArrayList<>();
+        int customerId = InputManagementUtility.nextInt("Enter the ID of the customer you wish to display all bookings");
+        try{
+            bookingsById = service.getBookingsByCustomerId(customerId);
+        } catch ( SQLException e ) {
+            System.out.println("Something has gone wrong, please try again later");
+            e.printStackTrace();
+        }
+        System.out.println("The following booking(s) were found:");
+        bookingsById.forEach(System.out::println);
+    }
+
+    private void showBookingsByCustomerEmail() {
+        List<Booking> bookingsByEmail = new ArrayList<>();
+        String customerEmail = InputManagementUtility.nextLine("Enter the e-mail of the customer you wish to display all bookings");
+        try{
+            bookingsByEmail = service.getBookingsByCustomerEmail(customerEmail);
+            System.out.printf("The following booking(s) were found:");
+            bookingsByEmail.forEach(System.out::println);
+        } catch ( SQLException e ) {
+            System.out.println("Something has gone wrong, please try again later");
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void cancelBookingByBookingID() {
+        int bookingID = InputManagementUtility.nextInt("Enter the booking ID of the booking you wish to cancel");
+        try{
+            service.cancelBooking(bookingID);
+            System.out.printf("Booking with ID: %d has been cancelled", bookingID);
+        } catch ( SQLException e ) {
+            System.out.println("Something has gone wrong, please try again later");
+            throw new RuntimeException(e);
         }
     }
 }
