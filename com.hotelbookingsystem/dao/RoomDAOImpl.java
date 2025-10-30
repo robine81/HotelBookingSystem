@@ -11,13 +11,14 @@ import java.util.Optional;
 
 public class RoomDAOImpl implements RoomDAO{
     @Override
-    public int addRoom(Room room) {
-        int rowsAdded = 0;
+    public int addRoom(Room room) throws SQLException {
+        int rowsAdded;
         String sql = """
                 INSERT INTO rooms(type, price)
                 VALUES(?, ?)
                 """;
-        try(Connection conn = DBConnection.getConnection();
+        Connection conn = DBConnection.getConnection();
+        try(
             PreparedStatement statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, room.getType());
             statement.setDouble(2, room.getPrice());
@@ -27,18 +28,17 @@ public class RoomDAOImpl implements RoomDAO{
                     room.initializeId(generatedKeys.getInt("id"));
                 }
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
         return rowsAdded;
     }
 
     @Override
-    public Optional<Room> getRoomById(int id) {
+    public Optional<Room> getRoomById(int id) throws SQLException {
         String sql = """
                 SELECT * FROM rooms WHERE id = ?
                 """;
-        try(Connection conn = DBConnection.getConnection();
+        Connection conn = DBConnection.getConnection();
+        try(
             PreparedStatement statement = conn.prepareStatement(sql)){
             statement.setInt(1, id);
             try(ResultSet rs = statement.executeQuery()){
@@ -48,35 +48,30 @@ public class RoomDAOImpl implements RoomDAO{
                             rs.getString("type"),
                             rs.getDouble("price")));
                 }
-            } catch (SQLException e) {
-                e.printStackTrace();
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
         return Optional.empty();
     }
 
     @Override
-    public List<Room> getAllRooms() {
+    public List<Room> getAllRooms() throws SQLException {
         List<Room> rooms = new ArrayList<>();
         String sql = """
                 SELECT * FROM rooms
                 """;
-        try(Connection conn = DBConnection.getConnection();
+        Connection conn = DBConnection.getConnection();
+        try(
             Statement statement = conn.createStatement();
             ResultSet rs = statement.executeQuery(sql)){
             while (rs.next()) {
                 rooms.add(new Room(rs.getInt("id"), rs.getString("type"), rs.getDouble("price")));
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
         return rooms;
     }
 
     @Override
-    public List<Room> getAvailableRooms(LocalDate startDate, LocalDate endDate) {
+    public List<Room> getAvailableRooms(LocalDate startDate, LocalDate endDate) throws SQLException {
         List<Room> rooms = new ArrayList<>();
         String sql = """
                 SELECT * FROM rooms
@@ -85,7 +80,8 @@ public class RoomDAOImpl implements RoomDAO{
                     OR ? BETWEEN start_date AND end_date
                 )
                 """;
-        try(Connection conn = DBConnection.getConnection();
+        Connection conn = DBConnection.getConnection();
+        try(
             PreparedStatement statement = conn.prepareStatement(sql)){
             statement.setObject(1, startDate);
             statement.setObject(2, endDate);
@@ -93,48 +89,42 @@ public class RoomDAOImpl implements RoomDAO{
                 while (rs.next()) {
                     rooms.add(new Room(rs.getInt("id"), rs.getString("type"), rs.getDouble("price")));
                 }
-            } catch (SQLException e) {
-                e.printStackTrace();
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
         return rooms;
     }
 
     @Override
-    public int updateRoom(Room room) {
-        int rowsUpdated = 0;
+    public int updateRoom(Room room) throws SQLException {
+        int rowsUpdated;
         String sql = """
                 UPDATE rooms
                 SET type = ?
                 AND price = ?
                 WHERE id = ?
                 """;
-        try(Connection conn = DBConnection.getConnection();
+        Connection conn = DBConnection.getConnection();
+        try(
             PreparedStatement statement = conn.prepareStatement(sql)) {
             statement.setString(1, room.getType());
             statement.setDouble(2, room.getPrice());
             statement.setInt(3, room.getId());
             rowsUpdated = statement.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
         return rowsUpdated;
     }
 
     @Override
-    public int deleteRoom(Room room) {
-        int rowsDeleted = 0;
+    public int deleteRoom(Room room) throws SQLException {
+        int rowsDeleted;
         String sql = """
                 DELETE FROM rooms WHERE id = ?
                 """;
-        try(Connection conn = DBConnection.getConnection();
+        Connection conn = DBConnection.getConnection();
+        try(
             PreparedStatement statement = conn.prepareStatement(sql)) {
             statement.setInt(1, room.getId());
             rowsDeleted = statement.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
         return rowsDeleted;
     }
