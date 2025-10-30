@@ -28,6 +28,7 @@ public class ReportService {
     }
 
     private void customersWhoNeverBooked () {
-        // SELECT c.id, c.name  from customers c left join bookings b ON c.id = b.customer_id WHERE b.id IS NULL;
+        // SELECT c.id, c.name  from customers c LEFT JOIN bookings b ON c.id = b.customer_id WHERE b.customer_id IS NULL;
+
     }
 }
