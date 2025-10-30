@@ -12,9 +12,11 @@ public interface CustomerDAO {
 
     List<Customer> getAllCustomers() throws SQLException;
 
-    Customer findCustomerByEmail(String email) throws SQLException;
+    Customer getCustomerByEmail(String email) throws SQLException;
+
+    Optional <Customer> getCustomerById(int id) throws SQLException;
 
     int updateCustomer(Customer customer) throws SQLException;
 
-    int deleteCustomer(Customer customer) throws SQLException;
+    int deleteCustomer(int id) throws SQLException;
 }
