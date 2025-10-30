@@ -33,7 +33,10 @@ public class RoomService {
     }
 
     public void updateRoom(int id, String type, double price) throws SQLException{
-        dao.updateRoom(new Room(id, type, price));
+        Room fetchedRoom = getRoomByID(id);
+        fetchedRoom.setType(type);
+        fetchedRoom.setPrice(price);
+        dao.updateRoom(fetchedRoom);
     }
 
     public void deleteRoom(int id) throws SQLException {
