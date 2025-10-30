@@ -69,13 +69,51 @@ public class CustomerDAOImpl implements CustomerDAO {
         return null;
     }
 
-    public int updateCustomer(Customer customer) throws SQLException{
-        int returnedRows = 0;
+    public Customer findCustomerById(int id) throws SQLException{
+        String sqlQuery = "SELECT * FROM customers WHERE id = ?";
 
-        return returnedRows;
+        try( Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sqlQuery)){
+            stmt.setInt(1, id);
+            try( ResultSet rs = stmt.executeQuery()){
+                if(rs.next()){
+                    return new Customer(rs.getInt("id"),
+                            rs.getString("name"),
+                            rs.getString("email"),
+                            rs.getString("city"));
+                }
+            } catch (SQLException e2){
+                e2.printStackTrace();
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
-    public int deleteCustomer(Customer customer) throws SQLException{
+    public int updateCustomer(Customer customer) throws SQLException{
+        String sql = "UPDATE customers SET name = ?, email = ?, city = ? WHERE id = ?";
+
+        PreparedStatement stmt = DBConnection.getConnection().prepareStatement(sql);
+
+        stmt.setString(1, customer.getName());
+        stmt.setString(2, customer.getEmail());
+        stmt.setString(3, customer.getCity());
+        stmt.setInt(4, customer.getId());
+
+        return stmt.executeUpdate();
+    }
+
+    public int deleteCustomer(int id) throws SQLException{
+        String sql = "DELETE FROM customers WHERE id = ? ";
+        try (Connection conn = DBConnection.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql)){
+            stmt.setInt(1, id);
+            return stmt.executeUpdate();
+            } catch (SQLException e){
+            e.printStackTrace();
+        }
         return 0;
     }
 }
