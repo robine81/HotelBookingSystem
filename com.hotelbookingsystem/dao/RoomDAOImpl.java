@@ -25,7 +25,7 @@ public class RoomDAOImpl implements RoomDAO{
             rowsAdded = statement.executeUpdate();
             try(ResultSet generatedKeys = statement.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
-                    room.initializeId(generatedKeys.getInt("id"));
+                    room.initializeId(generatedKeys.getInt(1));
                 }
             }
         }
