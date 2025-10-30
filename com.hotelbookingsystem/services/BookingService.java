@@ -4,6 +4,7 @@ import dao.Impl.BookingDAOImpl;
 import models.Booking;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.List;
 
 public class BookingService {
@@ -15,6 +16,18 @@ public class BookingService {
     }
 
     public List<Booking> getAllBookings() throws SQLException { return bookingDAO.getAllBookings(); }
+
+    public List<Booking> getBookingsBetweenDates(LocalDate startDate, LocalDate endDate) throws SQLException {
+        return bookingDAO.getBookingsBetweenDates(startDate, endDate);
+    }
+
+    public List<Booking> getBookingMaxDate(LocalDate maxDate) throws SQLException {
+        return getAllBookings().stream().filter( b -> b.getEndDate().isBefore(maxDate)).toList();
+    }
+
+    public List<Booking> getBookingMinDate(LocalDate minDate) throws SQLException {
+        return getAllBookings().stream().filter(b -> b.getStartDate().isAfter(minDate)).toList();
+    }
 
     public List<Booking> getBookingsByRoomId(int roomId) throws SQLException {
         return bookingDAO.getBookingsByRoomId(roomId);
@@ -28,7 +41,7 @@ public class BookingService {
         return bookingDAO.updateBooking(booking);
     }
 
-    public int cancelBooking(Booking booking) throws SQLException {
-        return bookingDAO.cancelBooking(booking);
+    public int cancelBooking(int id) throws SQLException {
+        return bookingDAO.cancelBooking(id);
     }
 }

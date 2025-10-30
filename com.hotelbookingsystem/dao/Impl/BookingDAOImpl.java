@@ -128,11 +128,11 @@ public class BookingDAOImpl implements BookingDAO {
     }
 
     @Override
-    public int cancelBooking (Booking booking) throws SQLException {
+    public int cancelBooking (int id) throws SQLException {
         int rowsDeleted = 0;
         String sql = "DELETE FROM bookings WHERE id = ?";
         try( PreparedStatement stmt = DBConnection.getConnection().prepareStatement(sql)) {
-            stmt.setInt(1, booking.getId());
+            stmt.setInt(1, id);
             rowsDeleted = stmt.executeUpdate();
         }
         return rowsDeleted;
