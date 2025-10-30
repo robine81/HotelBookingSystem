@@ -5,6 +5,7 @@ import models.Customer;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 public class CustomerService {
     CustomerDAOImpl dao = new CustomerDAOImpl();
@@ -16,7 +17,16 @@ public class CustomerService {
 
     public List<Customer> getAllCustomers() throws SQLException { return dao.getAllCustomers(); }
 
-    public Customer findCustomerByEmail(String email) throws SQLException{ return dao.findCustomerByEmail(email); }
+    public Customer getCustomerByEmail(String email) throws SQLException{ return dao.getCustomerByEmail(email); }
+
+    public Customer getRoomById(int id) throws SQLException {
+        Optional<Customer> optCustomer = dao.getCustomerById(id);
+        if(optCustomer.isPresent()){
+            return optCustomer.get();
+        } else {
+            throw new SQLException("no customer exists!");
+        }
+    }
 
     public int updateCustomer(Customer customer) throws SQLException { return dao.updateCustomer(customer); }
 
