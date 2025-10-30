@@ -70,9 +70,16 @@ public class CustomerDAOImpl implements CustomerDAO {
     }
 
     public int updateCustomer(Customer customer) throws SQLException{
-        int returnedRows = 0;
+        String sql = "UPDATE customers SET name = ?, email = ?, city = ? WHERE id = ?";
 
-        return returnedRows;
+        PreparedStatement stmt = DBConnection.getConnection().prepareStatement(sql);
+
+        stmt.setString(1, customer.getName());
+        stmt.setString(2, customer.getEmail());
+        stmt.setString(3, customer.getCity());
+        stmt.setInt(4, customer.getId());
+
+        return stmt.executeUpdate();
     }
 
     public int deleteCustomer(Customer customer) throws SQLException{
