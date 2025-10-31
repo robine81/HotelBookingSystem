@@ -1,34 +1,27 @@
 package services;
 
+import dao.ReportDAO;
+import dao.ReportDAOImpl;
 import dao.RoomDAO;
 import dao.RoomDAOImpl;
+import models.Customer;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Map;
 
 public class ReportService {
-    RoomDAO roomDAO = new RoomDAOImpl();
+    ReportDAO reportDAO = new ReportDAOImpl();
 
-    private void showBookingsPerCustomer () throws SQLException {
-        // SQL Query:
-        // SELECT c.id, c.name, COUNT(DISTINCT b.id) as numberofbookings from customers c INNER join bookings b ON c.id = b.customer_id GROUP BY c.id
+    public Map<Customer, Integer> numberOfBookingsPerCustomer () throws SQLException {
+        return reportDAO.numberOfBookingsPerCustomer();
+    }
+    public Double calculateAveragePriceForBookings() throws SQLException {
+        return reportDAO.calculateAveragePriceForBookings();
     }
 
-    private void showAveragePriceOnBookings() {
-        // SELECT AVG(r.price) from bookings b INNER JOIN rooms r ON b.room_id = r.id;
-    }
-
-    private void showAvilableRooms() {
-        /*
-        roomDAO.getAvailableRooms(
-                LocalDate.from("2025-11-01"),
-                LocalDate.from("2025-12-01"),
-        ); */
-
-    }
-
-    private void customersWhoNeverBooked () {
-        // SELECT c.id, c.name  from customers c LEFT JOIN bookings b ON c.id = b.customer_id WHERE b.customer_id IS NULL;
-
+    public List<Customer> getListOfCustomersWhoNeverBooked() throws SQLException {
+        return reportDAO.getListOfCustomersWhoNeverBooked();
     }
 }
