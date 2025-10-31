@@ -35,6 +35,13 @@ public class Hotel {
                     e.printStackTrace();
                 }
             });
+            put ("Customers without previous or active bookings", () -> {
+                try {
+                    System.out.println(reportController.getCustomersWhoNeverBooked());
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            });
         }});
     }
 }

@@ -13,6 +13,10 @@ public class ReportController {
         return reportService.numberOfBookingsPerCustomer();
     }
 
+    public List<Customer> customersWithoutBookings () throws  SQLException {
+        return reportService.getListOfCustomersWhoNeverBooked();
+    }
+
     public String numberOfBookingsPerCustomerToString () throws SQLException {
         StringBuilder sb = new StringBuilder();
         Map<Customer, Integer> numberOfBookingsPerCustomer = numberOfBookingsPerCustomer();
@@ -33,7 +37,15 @@ public class ReportController {
         return reportService.calculateAveragePriceForBookings();
     }
 
-    public List<Customer> getListOfCustomersWhoNeverBooked() throws SQLException {
-        return reportService.getListOfCustomersWhoNeverBooked();
+    public String getCustomersWhoNeverBooked() throws SQLException {
+        StringBuilder sb = new StringBuilder();
+        List<Customer> customersWithoutBookings =  customersWithoutBookings();
+        customersWithoutBookings.forEach(customer -> {
+            sb.append("Customer name:");
+            sb.append(" ");
+            sb.append(customer.getName());
+            sb.append("\n");
+        });
+        return sb.toString();
     }
 }
