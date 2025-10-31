@@ -12,7 +12,24 @@ public class ReportController {
     public Map<Customer, Integer> numberOfBookingsPerCustomer () throws SQLException {
         return reportService.numberOfBookingsPerCustomer();
     }
-    Double calculateAveragePriceForBookings() throws SQLException {
+
+    public String numberOfBookingsPerCustomerToString () throws SQLException {
+        StringBuilder sb = new StringBuilder();
+        Map<Customer, Integer> numberOfBookingsPerCustomer = numberOfBookingsPerCustomer();
+        for (Map.Entry<Customer, Integer> entry : numberOfBookingsPerCustomer.entrySet()) {
+            sb.append("Customer name:");
+            sb.append(" ");
+            sb.append(entry.getKey().getName());
+            sb.append(" | ");
+            sb.append("Number of bookings:");
+            sb.append(" ");
+            sb.append(entry.getValue());
+            sb.append("\n");
+        }
+        return sb.toString();
+    }
+
+    public Double calculateAveragePriceForBookings() throws SQLException {
         return reportService.calculateAveragePriceForBookings();
     }
 
