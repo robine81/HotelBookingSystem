@@ -4,6 +4,8 @@ import dao.RoomDAOImpl;
 import models.Room;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 public class RoomService {
@@ -20,6 +22,25 @@ public class RoomService {
         } else {
             throw new SQLException("no room exists!");
         }
+    }
+
+    public List<Room> getAllRooms() throws SQLException{
+        return dao.getAllRooms();
+    }
+
+    public List<Room> getAvailableRooms(LocalDate startDate, LocalDate endDate) throws SQLException{
+        return dao.getAvailableRooms(startDate, endDate);
+    }
+
+    public void updateRoom(int id, String type, double price) throws SQLException{
+        Room fetchedRoom = getRoomByID(id);
+        fetchedRoom.setType(type);
+        fetchedRoom.setPrice(price);
+        dao.updateRoom(fetchedRoom);
+    }
+
+    public void deleteRoom(int id) throws SQLException {
+        dao.deleteRoom(id);
     }
 
 }
