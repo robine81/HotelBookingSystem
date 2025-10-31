@@ -39,7 +39,7 @@ public class CustomerController {
     }
 
     private void findCustomer() {
-        String enteredEmail = InputManagementUtility.nextLine("Enter email:");
+        String enteredEmail = InputManagementUtility.nextLine("Enter email");
 
         try {
             Customer foundCustomer = service.getCustomerByEmail(enteredEmail);
@@ -64,9 +64,9 @@ public class CustomerController {
     }
 
     private void addCustomer() {
-        String name = InputManagementUtility.nextLine("Enter name:");
-        String email = InputManagementUtility.nextLine("Enter email:");
-        String city = InputManagementUtility.nextLine("Enter city:");
+        String name = InputManagementUtility.nextLine("Enter name");
+        String email = InputManagementUtility.nextLine("Enter email");
+        String city = InputManagementUtility.nextLine("Enter city");
         try {
             System.out.println(service.addCustomer(name,email,city));
         } catch (SQLException e) {

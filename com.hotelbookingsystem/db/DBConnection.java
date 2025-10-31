@@ -28,7 +28,6 @@ public class DBConnection {
             conn = DriverManager.getConnection(url_db, DB_USER, DB_PWD);
             PreparedStatement statement = conn.prepareStatement("CREATE DATABASE IF NOT EXISTS " + DB_NAME);
             statement.execute();
-            System.out.printf("Database %s ready to use%n", DB_NAME);
         }
 
         return conn;

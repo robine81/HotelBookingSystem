@@ -25,8 +25,7 @@ public class Customer {
     }
 
     public void initialiseId(int id) {
-        if(this.id == -1)
-        {
+        if(this.id == -1) {
             this.id = id;
         }
     }
