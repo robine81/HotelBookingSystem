@@ -25,7 +25,7 @@ public class RoomDAOImpl implements RoomDAO{
             rowsAdded = statement.executeUpdate();
             try(ResultSet generatedKeys = statement.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
-                    room.initializeId(generatedKeys.getInt("id"));
+                    room.initializeId(generatedKeys.getInt(1));
                 }
             }
         }
@@ -99,8 +99,8 @@ public class RoomDAOImpl implements RoomDAO{
         int rowsUpdated;
         String sql = """
                 UPDATE rooms
-                SET type = ?
-                AND price = ?
+                SET type = ?,
+                 price = ?
                 WHERE id = ?
                 """;
         Connection conn = DBConnection.getConnection();
@@ -115,7 +115,7 @@ public class RoomDAOImpl implements RoomDAO{
     }
 
     @Override
-    public int deleteRoom(Room room) throws SQLException {
+    public int deleteRoom(int id) throws SQLException {
         int rowsDeleted;
         String sql = """
                 DELETE FROM rooms WHERE id = ?
@@ -123,7 +123,7 @@ public class RoomDAOImpl implements RoomDAO{
         Connection conn = DBConnection.getConnection();
         try(
             PreparedStatement statement = conn.prepareStatement(sql)) {
-            statement.setInt(1, room.getId());
+            statement.setInt(1, id);
             rowsDeleted = statement.executeUpdate();
         }
         return rowsDeleted;

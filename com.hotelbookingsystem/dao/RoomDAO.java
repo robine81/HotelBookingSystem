@@ -19,5 +19,5 @@ public interface RoomDAO {
 
     int updateRoom(Room room) throws SQLException;
 
-    int deleteRoom(Room room) throws SQLException;
+    int deleteRoom(int id) throws SQLException;
 }
