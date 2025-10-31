@@ -6,6 +6,7 @@ public class Booking {
     private int id;
     private final int customerId;
     private final int roomId;
+    private transient String customerName;
     private LocalDate startDate;
     private LocalDate endDate;
 
@@ -55,13 +56,23 @@ public class Booking {
         this.endDate = endDate;
     }
 
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(String.format("ID: %s%n", id));
+        sb.append(String.format("Customer Name: %s%n", customerName));
+        sb.append(String.format("Booking ID: %s%n", id));
         sb.append(String.format("Room ID: %s%n", roomId));
         sb.append(String.format("Start date: %s%n", startDate));
         sb.append(String.format("End date: %s%n", endDate));
         return sb.toString();
     }
 }
+

@@ -17,7 +17,18 @@ public class BookingService {
         bookingDAO.addBooking(new Booking(id, roomId, startDate, endDate));
     }
 
-    public List<Booking> getAllBookings() throws SQLException { return bookingDAO.getAllBookings(); }
+    public List<Booking> getAllBookings() throws SQLException {
+        List<Booking> bookings = bookingDAO.getAllBookings();
+        bookings.forEach(b -> {
+            try {
+                String customerName = customerService.getCustomerById(b.getCustomerId()).getName();
+                b.setCustomerName(customerName);
+            } catch ( SQLException e ) {
+                throw new RuntimeException(e);
+            }
+        });
+        return bookings;
+    }
 
     public List<Booking> getBookingsBetweenDates(LocalDate startDate, LocalDate endDate) throws SQLException {
         return bookingDAO.getBookingsBetweenDates(startDate, endDate);
